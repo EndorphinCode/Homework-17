@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<title></title>
+<head>
+    <style>
+* *::after *::before { box-sizing: border-box; }
+
+.my-paragraph {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 100px;
+  width: 400px;
+  border: 2px solid black;
+}
+.theButton{
+    width: 80px;
+    height: 20px;
+}
+    </style>
+</head>
+<body>
+    <form onsubmit="return false">
+    <label> Busness Name:</label>
+    <input id="firstName" type="text" > <br>
+    <label> Musiness Description:</label>
+    <input id="lastName" type="text" > <br>
+    <label"> Rating:</label>
+    <input id="age" type="number"> <br>
+    <input type="submit" onclick="addState()" value="submit">
+    <input type="button" onclick="dataWipe()" value="Clear ALL">
+    </form>
+    <div id= "box"></div>
+
+  <script type="text/javascript">
+  let state = []
+
+function regBuisness(rowINX, busName, busDes, busRate, newStars){
+let info = document.createElement('div')
+  info.innerHTML = `Name: ${busName}, Description: ${busDes}, Rating: ${newStars}`
+  info.className = "my-paragraph"
+  info.appendChild(delButton(rowINX))
+  return info
+}
+
+  function delButton(rowINX){
+  let button = document.createElement('button')
+  button.id = rowINX
+  button.className = 'theButton'
+  button.innerHTML = 'DELETE'
+  button.onclick = removeDiv
+  return button
+  }
+
+  function removeDiv(e){
+  let inx = e.target.id
+  state[inx] = null
+  dbCall()
+}
+
+
+
+
+function addState(){
+    let busName = document.getElementById("firstName").value
+    let busDes = document.getElementById("lastName").value
+    let busRate = parseInt(document.getElementById("age").value)
+    let stars = "*"
+    let newStars = '*'
+    for(i=1; i<busRate; i++){
+    newStars=newStars+=stars
+  }
+    state.push ({
+        busName: busName,
+        busDes: busDes,
+        busRate: busRate,
+        newStars: newStars
+    })
+    dbCall()
+    console.log(state)
+}
+
+function dbCall() {
+  let container = document.getElementById('box')
+  container.innerHTML = ''
+  for (let i = 0; i < state.length; i++) {
+    let item = state[i]
+    if (item) {
+    container.appendChild(regBuisness(i, item.busName, item.busDes, item.busRate, item.newStars))
+  }
+}
+}
+
+function dataWipe(){
+  state = []
+  dbCall()
+}
+
+dbCall()
+
+
+    </script> 
+</body>
+</html>
